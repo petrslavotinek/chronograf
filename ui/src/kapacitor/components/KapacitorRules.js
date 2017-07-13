@@ -40,7 +40,13 @@ const KapacitorRules = ({
           to={`/sources/${source.id}/alert-rules/new`}
           className="btn btn-sm btn-primary"
         >
-          Create Rule
+          Build Rule
+        </Link>
+        <Link
+          to={`/sources/${source.id}/tickscript/new`}
+          className="btn btn-sm btn-primary"
+        >
+          Write Rule
         </Link>
       </div>
       <KapacitorRulesTable
@@ -53,7 +59,7 @@ const KapacitorRules = ({
   )
 }
 
-const PageContents = ({children, source}) =>
+const PageContents = ({children, source}) => (
   <div className="page">
     <div className="page-header">
       <div className="page-header__container">
@@ -77,6 +83,7 @@ const PageContents = ({children, source}) =>
       </div>
     </FancyScrollbar>
   </div>
+)
 
 const {arrayOf, bool, func, shape, node} = PropTypes
 
