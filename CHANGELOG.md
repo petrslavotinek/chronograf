@@ -5,6 +5,7 @@
 
 ### Features
 1. [#1681](https://github.com/influxdata/chronograf/pull/1681): Add the ability to select Custom Time Ranges in the Hostpages, Data Explorer, and Dashboards.
+1. [#1717](https://github.com/influxdata/chronograf/pull/1717): View server generated TICKscripts
 
 ### UI Improvements
 1. [#1707](https://github.com/influxdata/chronograf/pull/1707): Polish alerts table in status page to wrap text less
