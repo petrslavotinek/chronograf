@@ -3,7 +3,7 @@ import {getActiveKapacitor} from 'shared/apis'
 import {publishNotification} from 'shared/actions/notifications'
 import {
   getRules,
-  getRule,
+  getRule as getRuleAJAX,
   deleteRule as deleteRuleAPI,
   updateRuleStatus as updateRuleStatusAPI,
   createTask as createTaskAJAX,
@@ -13,7 +13,7 @@ import {errorThrown} from 'shared/actions/errors'
 export function fetchRule(source, ruleID) {
   return dispatch => {
     getActiveKapacitor(source).then(kapacitor => {
-      getRule(kapacitor, ruleID).then(({data: rule}) => {
+      getRuleAJAX(kapacitor, ruleID).then(({data: rule}) => {
         dispatch({
           type: 'LOAD_RULE',
           payload: {
@@ -29,6 +29,29 @@ export function fetchRule(source, ruleID) {
         })
       })
     })
+  }
+}
+
+export const getRule = (kapacitor, ruleID) => async dispatch => {
+  try {
+    const {data: rule} = await getRuleAJAX(kapacitor, ruleID)
+
+    dispatch({
+      type: 'LOAD_RULE',
+      payload: {
+        rule: {...rule, queryID: rule.query.id},
+      },
+    })
+
+    dispatch({
+      type: 'LOAD_KAPACITOR_QUERY',
+      payload: {
+        query: rule.query,
+      },
+    })
+  } catch (error) {
+    console.error(error)
+    throw error
   }
 }
 
