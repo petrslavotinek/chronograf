@@ -5,7 +5,6 @@ import NoKapacitorError from 'shared/components/NoKapacitorError'
 import SourceIndicator from 'shared/components/SourceIndicator'
 import KapacitorRulesTable from 'src/kapacitor/components/KapacitorRulesTable'
 import FancyScrollbar from 'shared/components/FancyScrollbar'
-import TICKscriptOverlay from 'src/kapacitor/components/TICKscriptOverlay'
 
 const KapacitorRules = ({
   source,
@@ -13,10 +12,7 @@ const KapacitorRules = ({
   hasKapacitor,
   loading,
   onDelete,
-  tickscript,
   onChangeRuleStatus,
-  onReadTickscript,
-  onCloseTickscript,
 }) => {
   if (loading) {
     return (
@@ -48,39 +44,37 @@ const KapacitorRules = ({
     ? '1 Alert Rule'
     : `${rules.length} Alert Rules`
   return (
-    <PageContents
-      source={source}
-      tickscript={tickscript}
-      onReadTickscript={onReadTickscript}
-      onCloseTickscript={onCloseTickscript}
-    >
+    <PageContents source={source}>
       <div className="panel-heading u-flex u-ai-center u-jc-space-between">
         <h2 className="panel-title">{tableHeader}</h2>
-        <Link
-          to={`/sources/${source.id}/alert-rules/new`}
-          className="btn btn-sm btn-primary"
-        >
-          Build Rule
-        </Link>
-        <Link
-          to={`/sources/${source.id}/tickscript/new`}
-          className="btn btn-sm btn-primary"
-        >
-          Write Rule
-        </Link>
+
+        <div className="u-flex u-ai-center u-jc-space-between">
+          <Link
+            to={`/sources/${source.id}/alert-rules/new`}
+            className="btn btn-sm btn-primary"
+            style={{marginRight: '4px'}}
+          >
+            Build Rule
+          </Link>
+          <Link
+            to={`/sources/${source.id}/tickscript/new`}
+            className="btn btn-sm btn-info"
+          >
+            Write TICKscript
+          </Link>
+        </div>
       </div>
       <KapacitorRulesTable
         source={source}
         rules={rules}
         onDelete={onDelete}
-        onReadTickscript={onReadTickscript}
         onChangeRuleStatus={onChangeRuleStatus}
       />
     </PageContents>
   )
 }
 
-const PageContents = ({children, source, tickscript, onCloseTickscript}) => (
+const PageContents = ({children, source}) => (
   <div className="page">
     <div className="page-header">
       <div className="page-header__container">
@@ -103,16 +97,10 @@ const PageContents = ({children, source, tickscript, onCloseTickscript}) => (
         </div>
       </div>
     </FancyScrollbar>
-    {tickscript
-      ? <TICKscriptOverlay
-          tickscript={tickscript}
-          onClose={onCloseTickscript}
-        />
-      : null}
   </div>
 )
 
-const {arrayOf, bool, func, node, shape, string} = PropTypes
+const {arrayOf, bool, func, node, shape} = PropTypes
 
 KapacitorRules.propTypes = {
   source: shape(),
@@ -121,15 +109,11 @@ KapacitorRules.propTypes = {
   loading: bool,
   onChangeRuleStatus: func,
   onDelete: func,
-  tickscript: string,
-  onReadTickscript: func,
-  onCloseTickscript: func,
 }
 
 PageContents.propTypes = {
   children: node,
   source: shape(),
-  tickscript: string,
   onCloseTickscript: func,
 }
 
